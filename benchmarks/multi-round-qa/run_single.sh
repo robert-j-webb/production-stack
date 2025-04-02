@@ -13,7 +13,7 @@ NUM_USERS=15
 NUM_ROUNDS=20
 
 SYSTEM_PROMPT=1000 # Shared system prompt length
-CHAT_HISTORY=20000 # User specific chat history length
+CHAT_HISTORY=8000 # User specific chat history length
 ANSWER_LEN=100 # Generation length per round
 
 run_benchmark() {
@@ -36,7 +36,7 @@ run_benchmark() {
 KEY=$3
 
 # Run benchmarks for different QPS values
-for qps in 0.1 0.3 0.5 0.7 0.9 1.1; do
+for qps in 0.1 0.5 1.0 2.0 4.0 8.0 16.0; do
     output_file="${KEY}_output_${qps}.csv"
     run_benchmark "$qps" "$output_file"
 done

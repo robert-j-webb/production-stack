@@ -108,6 +108,8 @@ spec:
           {{- end }}
           imagePullPolicy: IfNotPresent
           env:
+          - name: NCCL_P2P_DISABLE
+            value: '1'
           - name: HF_HOME
             {{- if hasKey $modelSpec "pvcStorage" }}
             value: /data
