@@ -6,6 +6,7 @@ import time
 from dataclasses import dataclass
 from typing import Optional
 
+import random
 import openai
 import pandas as pd
 
@@ -176,6 +177,13 @@ class RequestExecutor:
         future.add_done_callback(real_callback)
 
 
+randomWords = [
+    "the", "be", "to", "of", "and", "in", "that", "have", "with", 
+    "this", "from", "they", "say", "her", "she", "will", "one", 
+    "all", "would", "there", "their", "what", "out", "about", 
+    "who", "get", "which", "when", "make", "can", "like", "time", 
+    "just", "him", "know", "take", "into", "year", "your", "good"
+]
 class UserSession:
 
     def __init__(self, user_config: UserConfig, use_sharegpt=False, sharegpt_data=None):
@@ -213,10 +221,19 @@ class UserSession:
 
     def _build_system_prompt(self):
 
+        def gen_static_text(length):
+            return " ".join(["hi"] * (length // 3))
+        
         def gen_dummy_text(length):
-            return " ".join(["hi"] * length)
+            words = []
+            total_length = 0
+            while total_length < length:
+                word = random.choice(randomWords)
+                total_length += (len(word) + 1)
+                words.append(word)
+            return " ".join(words)
 
-        dummy_text_sys = gen_dummy_text(self.user_config.system_prompt_len)
+        dummy_text_sys = gen_static_text(self.user_config.system_prompt_len)
         dummy_text_user = gen_dummy_text(self.user_config.user_info_len)
         system_prompt = (
             f"Hi, here's some system prompt: {dummy_text_sys}."
