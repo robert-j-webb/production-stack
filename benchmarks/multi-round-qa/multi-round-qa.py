@@ -220,20 +220,16 @@ class UserSession:
         self.finish_times.append(response.finish_time)
 
     def _build_system_prompt(self):
-
-        def gen_static_text(length):
-            return " ".join(["hi"] * (length // 3))
-        
         def gen_dummy_text(length):
             words = []
             total_length = 0
             while total_length < length:
                 word = random.choice(randomWords)
-                total_length += (len(word) + 1)
+                total_length+=1
                 words.append(word)
             return " ".join(words)
 
-        dummy_text_sys = gen_static_text(self.user_config.system_prompt_len)
+        dummy_text_sys = gen_dummy_text(self.user_config.system_prompt_len)
         dummy_text_user = gen_dummy_text(self.user_config.user_info_len)
         system_prompt = (
             f"Hi, here's some system prompt: {dummy_text_sys}."
